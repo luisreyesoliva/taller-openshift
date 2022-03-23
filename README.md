@@ -7,7 +7,7 @@
 ## Resumen
 Este tutorial está pensado para que te puedas familiarizar con las capacidades más interesantes de Redhat Openshift, mediante la realización de un par de ejemplos, donde desplegarás y gestionarás aplicaciones dentro de la plataforma de orquestación de contenedores.
 
-## Tecnologias
+## Tecnologías
 
 - [Kubernetes](https://cloud.ibm.com/docs/containers?topic=containers-getting-started)
 - [Openshift](https://cloud.ibm.com/docs/openshift?topic=openshift-getting-started)
