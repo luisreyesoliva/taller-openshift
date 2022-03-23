@@ -5,30 +5,31 @@
 ![dotenv version](https://img.shields.io/badge/dotenv-6.2.0v-yellow)
 
 ## Resumen
-Este tutorial está pensado para que te puedas familiarizar con las capacidades más interesantes de Redhat Openshift, mediante la realización de un par de ejemplos, donde desplegaras y gestionarás aplicaciones dentro de la plataforma de orquestación de contenedores.
+Este tutorial está pensado para que te puedas familiarizar con las capacidades más interesantes de Redhat Openshift, mediante la realización de un par de ejemplos, donde desplegarás y gestionarás aplicaciones dentro de la plataforma de orquestación de contenedores.
 
 ## Tecnologias
 
-- [Node.js](https://nodejs.org/en/docs/guides/getting-started-guide/)
-- [Watson Assistant](https://cloud.ibm.com/docs/assistant?topic=assistant-getting-started)
 - [Kubernetes](https://cloud.ibm.com/docs/containers?topic=containers-getting-started)
 - [Openshift](https://cloud.ibm.com/docs/openshift?topic=openshift-getting-started)
+- [Watson Assistant](https://cloud.ibm.com/docs/assistant?topic=assistant-getting-started)
+- [Node.js](https://nodejs.org/en/docs/guides/getting-started-guide/)
+
 
 Tiempo estimado: 30 a 45 minutos.
 
 ## Prerequisitos
-- Contar con una cuenta de [IBM Cloud](https://cloud.ibm.com/). Consulta con el instructor la manera de acceder a la cuenta para poder realizar las prácticas.
-- Disponer de un cluster de Openshift desplegado. Consulta con el instructor para saber cómo crear y/o acceder a tu cluster de Openshift.
+- Contar con una cuenta de [IBM Cloud](https://cloud.ibm.com/). 
+- Disponer de un cluster de Openshift desplegado.
 - Tener desplegado un skill en [Watson Assistant](https://cloud.ibm.com/catalog/services/watson-assistant) con las intenciones, los diálogos y las entidades configuradas. 
 
 ## Taller 1 - Crea, escala y actualiza tu primera app en Openshift
 
 En este primer taller, veremos cómo gestionar un ciclo de vida básico de una aplicación en Openshift.
-Aprenderás a crear y desplegar una aplicación a partir de una imagen Docker, escalarla, atualizar a una versión más moderna y finalmente, hacer rollback a una versión anterior.
+Aprenderás a crear y desplegar una aplicación a partir de una imagen Docker, escalarla, actualizar a una versión más moderna y finalmente, hacer rollback a una versión anterior.
 
 Este ejemplo está basado en el tutorial que puedes encontrar aquí [Create, scale, upgrade, and rollback an application on Red Hat OpenShift](https://developer.ibm.com/tutorials/create-scale-upgrade-and-rollback-an-application-in-red-hat-openshift/)
 
-### Acceso al Cluster de Openshift
+### 1.1 Accede al Cluster de Openshift
 1. Accede a tu cuenta IBM Cloud.
 
 2. Desde la barra lateral dirigete a **Openshift > Clusters**
@@ -49,7 +50,7 @@ Copia el comando que se muestra debajo de **Log in with this token**
 
 7. Ejecuta el comando copiado en el paso 5. 
 
-## Creación de una aplicación a partir de una imagen Docker
+### 1.2 Crea una aplicación a partir de una imagen Docker
 
 1. En IBM Cloud Shell, crea un nuevo proyecto: 
 
@@ -76,7 +77,7 @@ oc get pods
 
 <img width="498" alt="Captura de pantalla 2022-03-23 a las 16 44 52" src="https://user-images.githubusercontent.com/102157561/159739237-ba9dffc8-7a41-47cc-a8e2-2898906e8203.png">
 
-4. Para exponer el despliegue, se hará uso del puerto 3000: 
+4. Para exponer el despliegue, se crear un Servicio, que expondrá el puerto 3000 del contenedor en un puerto del nodo (NodePort): 
 
 ```
 oc expose deployment myguestbook --type="NodePort" --port=3000
@@ -92,9 +93,9 @@ oc get service
 
 <img width="577" alt="Captura de pantalla 2022-03-23 a las 16 46 01" src="https://user-images.githubusercontent.com/102157561/159739470-2f980b16-845c-4856-af2b-53eb6821f10e.png">
 
-Se puede acceder al servicio dentro del pod a través del <NodeIP>:<NodePort>, pero en el caso de OpenShift en IBM Cloud, el NodeIP no es accesible de manera pública. 
+Se podría acceder al servicio usando <NodeIP:NodePort>, pero en el caso de OpenShift en IBM Cloud, el NodeIP no es accesible de manera pública. 
 
- 6. Para exponer el servicio de manera pública, es necesario crear una ruta pública. Para ello, en la consola de Openshift Container Platform nos dirigimos a **Networking > Routes** desde la perspectiva de administrador, luego pulsamos **Create Route**
+ 6. Para exponer el servicio de manera pública, es necesario crear una ruta pública. Para ello, en la consola de Openshift Container Platform, desde la perspectiva de Administrador, accedemos al proyecto que nos acabamos de crear desde linea de comando **Home > Projects** y después nos dirigimos a **Networking > Routes**, luego pulsamos **Create Route**
 
  7. Rellena los campos de la siguiente manera, considerando principalmente: 
  - **Name:** myguestbook
@@ -111,7 +112,7 @@ La URL debería rediriginirnos a una página similar a la siguiente
   
 <img width="807" alt="Captura de pantalla 2022-03-23 a las 15 36 16" src="https://user-images.githubusercontent.com/102157561/159724371-14654c4b-6863-49d8-a21e-87adff6d127b.png">
 
-## Escala la aplicación utilizando replicas
+### 1.3 Escala la aplicación utilizando replicas
 En esta sección, vamos a escalar la aplicación creando réplicas de los pod que creamos previamente. El tener múltiples replicas de un mismo pod, nos permite asegurar que el despliegue cuenta con los recursos disponibles para soportar un incremento de carga en la aplicación. 
 
 
@@ -140,7 +141,7 @@ oc get pods -n guestbook-project
 
 <img width="497" alt="Captura de pantalla 2022-03-23 a las 16 47 15" src="https://user-images.githubusercontent.com/102157561/159739778-6b0000b6-e41c-47c4-8ffc-b999cfd213d2.png">
  
-## Actualiza la aplicación
+### 1.4 Actualiza la aplicación
 Con Openshift, es posible realizar una actualización continua de la aplicación a una nueva imagen. Con esta modalidad, es posible actualizar la imagen y deshacer los cambios si se encuentra un problema durante el despliegue. 
   
 A continuación, actualizatemos la imagen con la tag v1, a una nueva versión v2. 
@@ -174,13 +175,14 @@ oc describe pod <pod-name>
 ```
  <img width="754" alt="Captura de pantalla 2022-03-23 a las 16 48 59" src="https://user-images.githubusercontent.com/102157561/159740167-309ce8df-784e-4bbf-9252-3db81bec6ced.png">
 
- 5. Actualiza la URL para notar que el Pod está utilizando la imagen v2 de la aplicación Guestbook. En caso que continúe apareciendo la versión antigua, es necesario forzar la actualización de la página, en la mayoría de los navegadores se realiza con `ctrl+F5`
+ 5. Actualiza la URL y verás los cambios en la aplicación. El Pod está utilizando la imagen v2 de la aplicación Guestbook. En caso que continúe apareciendo la versión antigua, es necesario forzar la actualización de la página para eliminar la caché, en la mayoría de los navegadores se realiza con `ctrl+F5`
 ![image](https://user-images.githubusercontent.com/102157561/159728270-4d7a05f1-f10d-4a74-a4cc-227075c07755.png)
 
-## Rollback de la aplicación
-Cuando se realiza una actualización continua, es posible ver referencias a las antiguas replicas y a las nuevas. En el proyecto, las antiguas replicas son los 5 pods originales desplegados en la sección 2. Las replicas nuevas son las que se han creado con la nueva imagen. 
+### 1.5 Haz rollback de la aplicación
+Cuando se realiza una actualización en el deployment, es posible ver referencias a las antiguas replicas y a las nuevas. En el proyecto, las antiguas replicas son los 5 pods originales desplegados en la sección 2. Las replicas nuevas son las que se han creado con la nueva imagen. 
+Kubernetes siempre permite navegar entre las replicas y recuperar estados previos.
   
-Todos los pods pertenecen al despliegue, quien se encarga de gestionarlos a través de un recurso llamado ReplicaSet. 
+Todos los pods pertenecen al despliegue, y es quién se encarga de gestionarlos a través de un recurso llamado ReplicaSet. 
 
 1. Para ver las ReplicaSet que tenemos, utiliza el siguiente comando: 
 
@@ -206,7 +208,7 @@ oc rollout status deployment/myguestbook
 
 <img width="510" alt="Captura de pantalla 2022-03-23 a las 16 50 28" src="https://user-images.githubusercontent.com/102157561/159740465-af015592-26ad-42a7-b28c-60a3d86bd64f.png">
 
- 4. Obtén una lista de los nuevos pods creados como parte de deshacer el rollout: 
+ 4. Obtén una lista de los nuevos pods creados como consecuencia de deshacer el rollout: 
 
 ```
 oc get pods
@@ -231,53 +233,10 @@ oc get pods
 
 <img width="514" alt="Captura de pantalla 2022-03-23 a las 16 51 21" src="https://user-images.githubusercontent.com/102157561/159740697-036918c0-2371-47e8-8953-017ab410e374.png">
 
- 7. Actualiza la URL para notar que el Pod está utilizando la imagen v2 de la aplicación Guestbook. En caso que continúe apareciendo la versión antigua, es necesario forzar la actualización de la página, en la mayoría de los navegadores se realiza con `ctrl+F5`
-![image](https://user-images.githubusercontent.com/102157561/159731051-3df3b7c7-00d4-4e38-a6f1-c0e822ca1d38.png)
+ 7. Actualiza la URL para notar que el Pod está utilizando de nuevo la imagen v1 de la aplicación Guestbook. 
   
-## Resumen
+### 1.6 Resumen
 Ahora sabemos cómo desplegar, escalar, actualizar y deshacer actualizaciones (rollback) aplicaciones en Openshift. Con este conocimiento es posible desplegar aplicaciones a partir de imágenes Docker, escalarlas para una determinada carga de trabajo, actualizarlas a nuevas versiones y volver a antiguas versiones en caso de bugs o problemas sobre las nuevas versiones. 
-
-## Taller 1 - Crea, escala y actualiza tu primera app en Openshift
-
-En este primer taller, veremos cómo gestionar un ciclo de vida básico de una aplicación en Openshift.
-Aprenderás a crear y desplegar una aplicación a partir de una imagen Docker, escalarla, atualizar a una versión más moderna y finalmente, hacer rollback a una versión anterior.
-
-Este ejemplo está basado en el tutorial que puedes encontrar aquí [Create, scale, upgrade, and rollback an application on Red Hat OpenShift](https://developer.ibm.com/tutorials/create-scale-upgrade-and-rollback-an-application-in-red-hat-openshift/)
-
-### 1.1 Accede a la IBM Cloud Shell y logéate en tu cluster de Openshift
-
-Consulta con el instructor los pasos a seguir para acceder a través de linea de comando a tu cluster de Openshift
-
-### 1.2 Crea la aplicación a partir de una imagen Docker
-
-1. Desde la IBM Cloud Shell, crea un nuevo proyecto utilizando el siguiente comando:
-
-```
-oc new-project guestbook-project
-```
-
-2. Crea un nuevo recurso Deplyment utilizando la [imagen Docker](https://hub.docker.com/r/ibmcom/guestbook/tags) que almacenamos en el registro público de imágenes de Docker. 
-
-```
-oc create deployment myguestbook --image=ibmcom/guestbook:v1
-```
-Este despliegue crea un pod y lo pone en ejecución. Con el siguiente comando podrás ver la lista de pods en tu namespace (o proyecto en terminología Openshift).
-
-```
-oc get pods
-```
-3. Expón el deployment en el puerto 3000. Esto creará un recurso de tipo Service que nos dará acceso al pod.
-
-```
-oc expose deployment myguestbook --type="NodePort" --port=3000
-```
-
-Para ver el servicio que acabas de exponer, utiliza el siguiente comando:
-
-```
-oc get service
-```
-
 
 ## Taller 2 - Despliega una aplicación en Openshift e intégrala con un asistente virtual
 
@@ -304,7 +263,7 @@ Dentro de la perspectiva de Administrador, selecciona "Proyectos" y haz click en
 Damos un nombre a nuestro proyecto y le damos a crear.
 
 <p align="center">
-  <img src="images/watsonbotaapp.png" width="75%"></img>
+  <img src="images/watsonbotapp.png" width="75%"></img>
 </p>
 
 Con esto, ya tenemos nuestro namespace (proyecto en terminología Openshift) listo para albergar nuestras aplicaciones.
@@ -312,7 +271,9 @@ Con esto, ya tenemos nuestro namespace (proyecto en terminología Openshift) lis
 ### 2.3 Crea la aplicación a partir de una imagen Docker
 
 Ahora crearemos la aplicación a partir de una imagen Docker que tenemos preparada previamente en nuestro Dockerhub.
+
 Esta aplicación está preparada para conectarse a un servicio de Watson Assistant e interactuar con él mediante una interface web, en la que también se podrá visualizar la información en formato json que devuelve en asistente en cada interacción.
+
 Lo primero que haremos será crear una nueva aplicación a partir de una imagen. Para ello, desde la perspectiva de Desarrollador, selecciona crear nueva aplicación y elige Imagen de Contenedor de entre todas las diferentes opciones que ofrece Openshift.
 
 <p align="center">
@@ -320,6 +281,13 @@ Lo primero que haremos será crear una nueva aplicación a partir de una imagen.
 </p>
 
 Esto nos lleva a un formulario de creación de aplicaciones donde tendremos que indicar la imagen de contenedor correspondiente.
+
+```
+luisreyes/watson-bot:1.0
+```
+
+Por sencillez, hemos dejado la imagen disponible en el Dockerhub, pero en entornos empresariales usaremos siempre el registro privado de contenedores que proporciona Openshift Container Platform para asegurar que nuestras imágenes cumplen con todos los requistos de seguridad.
+
 No hace falta indicar nada más. Openshift creará por defecto todos los recursos necesarios (pods, replicaset, deployment, servcicios) para que la aplicación se ponga en marcha.
 
 
@@ -346,7 +314,7 @@ Vamos a resolver este problema, para ello usaremos un ConfigMap.
 ### 2.5 Crear un ConfigMap e inyectarlo en el pod
 
 Ahora crearemos un recurso específico de Kubernetes para la gestión de variables de entorno. El ConfigMap. 
-Volvemos a la perspectiva de Administrador y desde ahí vamos a la opción de menú Workloads y dentro seleccionamos ConfigMap. Creamos un nuevo ConfigMap y sobreescribimos la definición por defecto con el yaml que tenéis a continuación:
+Volvemos a la perspectiva de Administrador y desde ahí vamos a la opción de menú **Workloads > ConfigMap**. Creamos un nuevo ConfigMap y sobreescribimos la definición por defecto con el yaml que tenéis a continuación:
 
 ```
 apiVersion: v1
@@ -387,7 +355,7 @@ Esto es todo. Salva el Deployment.
 
 ### 2.6 Comprobar que la aplicación funciona correctamente
 
-Kubernetes volverá a regenerar el pod en cuanto salvemos la nueva versión del Deployment.
+Openshift volverá a regenerar el pod en cuanto salvemos la nueva versión del Deployment.
 Si todo ha ido bien, el Pod ahora sí se ejecutará correctamente (comprueba de nuevo el Log). 
 Ahora, simplemente, accede a la Ruta que Openshift ha creado para acceder desde un navegador, y prepárate a disfrutar con tu nuevo Bot.
 
@@ -405,6 +373,6 @@ Este taller y el código que usamos está basado en el tutorial que puedes encon
 
 ## Licencia
 
-Este Code Pattern se encuentra licenciado bajo Apache License, Version 2. Objetos de código de terceros invocados en dentro de este Code Pattern se encuentran licenciados bajo sus respectivos proveedores en conformidad con los términos de sus correspondientes licencias. Todas las contribuciones se encuentran sujetas al [Developer Certificate of Origin, Version 1.1](https://developercertificate.org/) y la [Apache License, Version 2](https://www.apache.org/licenses/LICENSE-2.0.txt).
+Este tutorial se encuentra licenciado bajo Apache License, Version 2. Objetos de código de terceros invocados en dentro de este Code Pattern se encuentran licenciados bajo sus respectivos proveedores en conformidad con los términos de sus correspondientes licencias. Todas las contribuciones se encuentran sujetas al [Developer Certificate of Origin, Version 1.1](https://developercertificate.org/) y la [Apache License, Version 2](https://www.apache.org/licenses/LICENSE-2.0.txt).
 
 [Preguntas frecuentes sobre Apache License](https://www.apache.org/foundation/license-faq.html#WhatDoesItMEAN)
