@@ -1,7 +1,6 @@
 # Taller Openshift
-[![NPM](https://nodei.co/npm/discord.js.png?compact=true)](https://nodei.co/npm/discord.js/)
 ![ibm watson version](https://img.shields.io/badge/ibm--watson-6.0.3-blue)
-![discord.js version](https://img.shields.io/badge/discord.js-12.5.3v-green)
+![openshift version](https://img.shields.io/badge/openshift--container--platform-4.8.31-red)
 ![dotenv version](https://img.shields.io/badge/dotenv-6.2.0v-yellow)
 
 ## Resumen
@@ -21,6 +20,10 @@ Tiempo estimado: 30 a 45 minutos.
 - Contar con una cuenta de [IBM Cloud](https://cloud.ibm.com/). 
 - Disponer de un cluster de Openshift desplegado.
 - Tener desplegado un skill en [Watson Assistant](https://cloud.ibm.com/catalog/services/watson-assistant) con las intenciones, los diálogos y las entidades configuradas. 
+
+## Índice
+- Taller 1 - [Crea, escala y actualiza tu primera app en Openshift](https://github.com/luisreyesoliva/taller-openshift#taller-1---crea-escala-y-actualiza-tu-primera-app-en-openshift)
+- Taller 2 - [Despliega una aplicación en Openshift e intégrala con un asistente virtual](https://github.com/luisreyesoliva/taller-openshift#taller-2---despliega-una-aplicaci%C3%B3n-en-openshift-e-int%C3%A9grala-con-un-asistente-virtual)
 
 ## Taller 1 - Crea, escala y actualiza tu primera app en Openshift
 
@@ -112,8 +115,8 @@ La URL debería rediriginirnos a una página similar a la siguiente
   
 <img width="807" alt="Captura de pantalla 2022-03-23 a las 15 36 16" src="https://user-images.githubusercontent.com/102157561/159724371-14654c4b-6863-49d8-a21e-87adff6d127b.png">
 
-### 1.3 Escala la aplicación utilizando replicas
-En esta sección, vamos a escalar la aplicación creando réplicas de los pod que creamos previamente. El tener múltiples replicas de un mismo pod, nos permite asegurar que el despliegue cuenta con los recursos disponibles para soportar un incremento de carga en la aplicación. 
+### 1.3 Escala la aplicación replicando los pods
+En esta sección, vamos a escalar la aplicación creando réplicas de los pod que creamos previamente. El tener múltiples replicas de un mismo pod nos permite asegurar que el despliegue cuenta con los recursos disponibles para soportar un incremento de carga en la aplicación. 
 
 
  1. En IBM Cloud Shell, incrementamos la capacidad de una única instancia de Guestbook, a 5 instancias: 
