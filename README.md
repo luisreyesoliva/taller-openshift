@@ -98,7 +98,9 @@ oc get service
 
 Se podría acceder al servicio usando <NodeIP:NodePort>, pero en el caso de OpenShift en IBM Cloud, el NodeIP no es accesible de manera pública. 
 
- 6. Para exponer el servicio de manera pública, es necesario crear una ruta pública. Para ello, en la consola de Openshift Container Platform, desde la perspectiva de Administrador, accedemos al proyecto que nos acabamos de crear desde linea de comando **Home > Projects** y después nos dirigimos a **Networking > Routes**, luego pulsamos **Create Route**
+ 6. Para exponer el servicio de manera pública, es necesario crear una ruta pública. Para ello:
+ - En la consola de Openshift Container Platform, desde la perspectiva de Administrador, accedemos al proyecto que nos acabamos de crear desde linea de comando **Home > Projects** 
+ - Una vez en el proyecto, entramos en **Networking > Routes**, luego pulsamos **Create Route**
 
  7. Rellena los campos de la siguiente manera, considerando principalmente: 
  - **Name:** myguestbook
