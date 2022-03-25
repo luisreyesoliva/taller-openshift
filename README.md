@@ -344,21 +344,28 @@ data:
 
 ```
 Sustituye los valores para cada clave con las credenciales del servicio de Watson Assistant.
-Para obtener las credenciales de acceso al servicio desplegado, accede a dicho servicio y copia los valores correspondientes a API_KEY y SERVICE_URL que puedes encontrar en la pantalla principal del servicio desplegdo.
+Para obtener las credenciales de acceso al servicio desplegado, accede a dicho servicio y copia los valores correspondientes a API_KEY y SERVICE_URL que puedes encontrar en la pantalla principal del servicio desplegado.
+
+<p align="center">
+  <img src="images/credencialeswa.png" width="75%"></img>
+</p>
+
+También tendrás que acceder al skill concreto y a los detalles del API para obtener el valor al parámetro WORKSPACE_ID
+
 
 <p align="center">
   <img src="images/accessskill.png" width="75%"></img>
 </p>
 
 
-También tendrás que acceder al skill concreto para darle valor al parámetro WORKSPACE_ID
+Copia el campo SkillID
 
 <p align="center">
   <img src="images/copiarskill.png" width="75%"></img>
 </p>
 
 
-Una vez configurado, dale al boton crear. 
+Una vez configurado el ConfigMap, dale al boton crear. 
 Ya tenemos nuestro ConfigMap preparado con los parámetros y los valores que espera la aplicación.
 
 Ahora tenemos que "inyectar" ese ConfigMap en los pods desplegados. Para ello, volvemos de nuevo a la perspectiva de Desarrollador, a la vista de Topología, y desde ahí Editamos el Deployment. 
