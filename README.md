@@ -41,7 +41,7 @@ Este ejemplo está basado en el tutorial que puedes encontrar aquí [Create, sca
 3. Selecciona el Cluster asignado y te redirigirá a una consola como la siguiente: 
 <img width="1432" alt="Captura de pantalla 2022-03-23 a las 16 16 24" src="https://user-images.githubusercontent.com/102157561/159733000-1573a6d5-60f9-426f-87ee-20e996fcba4f.png">
 
-4. Selecciona en la esquina superior derecha **Openshift Web Console**
+4. Selecciona en la esquina superior derecha **Openshift Web Console** (*)
 
 5. En la esquina superior derecha pincha en **IAM#user_email** y posteriormente en **Copy Login Command**
 <img width="1438" alt="Captura de pantalla 2022-03-23 a las 16 18 37" src="https://user-images.githubusercontent.com/102157561/159733503-01753d58-ad79-499d-9a92-fdc36febdfef.png">
@@ -53,6 +53,7 @@ Copia el comando que se muestra debajo de **Log in with this token**
 
 7. Ejecuta el comando copiado en el paso 5. 
 
+(*) **En caso de que no se abriera la consola de Openshift, podría ser un problema con el acceso al puerto, verifica que el puerto esté abierto y permita la salida a internet**
 ### 1.2 Crea una aplicación a partir de una imagen Docker
 
 1. En IBM Cloud Shell, crea un nuevo proyecto: 
@@ -180,8 +181,17 @@ oc describe pod <pod-name>
 ```
  <img width="754" alt="Captura de pantalla 2022-03-23 a las 16 48 59" src="https://user-images.githubusercontent.com/102157561/159740167-309ce8df-784e-4bbf-9252-3db81bec6ced.png">
 
- 5. Actualiza la URL y verás los cambios en la aplicación. El Pod está utilizando la imagen v2 de la aplicación Guestbook. En caso que continúe apareciendo la versión antigua, es necesario forzar la actualización de la página para eliminar la caché, en la mayoría de los navegadores se realiza con `ctrl+F5`
+ 5. Actualiza la URL y verás los cambios en la aplicación. El Pod está utilizando la imagen v2 de la aplicación Guestbook. 
+
 ![image](https://user-images.githubusercontent.com/102157561/159728270-4d7a05f1-f10d-4a74-a4cc-227075c07755.png)
+
+En caso que continúe apareciendo la versión antigua, es necesario forzar la actualización de la página para eliminar la caché.
+ - En la mayoría de los navegadores en Windows se realiza con `ctrl+F5`
+ - En Mac, el hard refresh es con `mays+cmd+r`
+
+ <p align="center">
+  <img src="images/hardrefresh.png" width="75%"></img>
+</p>
 
 ### 1.5 Haz rollback de la aplicación
 Cuando se realiza una actualización en el deployment, es posible ver referencias a las antiguas replicas y a las nuevas. En el proyecto, las antiguas replicas son los 5 pods originales desplegados en la sección 2. Las replicas nuevas son las que se han creado con la nueva imagen. 
@@ -334,7 +344,19 @@ data:
 
 ```
 Sustituye los valores para cada clave con las credenciales del servicio de Watson Assistant.
-Sigue las indicaciones del instructor para acceder a dichos valores y pégalos en el Configmap.
+Para obtener las credenciales de acceso al servicio desplegado, accede a dicho servicio y copia los valores correspondientes a API_KEY y SERVICE_URL que puedes encontrar en la pantalla principal del servicio desplegdo.
+
+<p align="center">
+  <img src="images/accessskill.png" width="75%"></img>
+</p>
+
+
+También tendrás que acceder al skill concreto para darle valor al parámetro WORKSPACE_ID
+
+<p align="center">
+  <img src="images/copiarskill.png" width="75%"></img>
+</p>
+
 
 Una vez configurado, dale al boton crear. 
 Ya tenemos nuestro ConfigMap preparado con los parámetros y los valores que espera la aplicación.
